@@ -1,0 +1,38 @@
+{
+  "name": "check-pnr-status",
+  "version": "0.0.0",
+  "description": "My divine module",
+  "license": "MIT",
+  "repository": "icyflame/check-pnr-status",
+  "author": {
+    "name": "Siddharth Kannan",
+    "email": "kannan.siddharth12@gmail.com",
+    "url": "icyflame.github.io"
+  },
+  "bin": "cli.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "semistandard && mocha"
+  },
+  "files": [
+    "index.js",
+    "cli.js"
+  ],
+  "keywords": [
+    "cli-app",
+    "cli",
+    ""
+  ],
+  "dependencies": {
+    "configstore": "^1.2.1",
+    "meow": "^3.3.0",
+    "parse-json": "^2.2.0",
+    "request": "^2.61.0"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "semistandard": "6.1.1"
+  }
+}
