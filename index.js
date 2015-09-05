@@ -34,7 +34,8 @@ module.exports = function (str, opts) {
   }
 
   if (opts.add) {
-    console.log('Add this PNR to the configstore!');
+    addPnr(opts.add);
+    success('PNR added! Run ' + chalk.green.underline('pnr -a') + ' to check status of all PNRs!');
     return;
   }
 
