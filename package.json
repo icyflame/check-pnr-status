@@ -9,7 +9,9 @@
     "email": "kannan.siddharth12@gmail.com",
     "url": "icyflame.github.io"
   },
-  "bin": "cli.js",
+  "bin": {
+    "pnr": "cli.js"
+  },
   "engines": {
     "node": ">=0.10.0"
   },
@@ -23,13 +25,17 @@
   "keywords": [
     "cli-app",
     "cli",
-    ""
+    "pnr",
+    "status",
+    "indian",
+    "railways",
+    "check",
+    "store"
   ],
   "dependencies": {
+    "arr-exclude": "^1.0.0",
     "chalk": "^1.1.1",
     "configstore": "^1.2.1",
-    "confirm-simple": "^1.0.3",
-    "got": "^4.1.1",
     "inquirer": "^0.9.0",
     "log-update": "^1.0.0",
     "meow": "^3.3.0",

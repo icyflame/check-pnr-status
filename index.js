@@ -3,8 +3,10 @@ module.exports = function (str, opts) {
   var chalk = require('chalk');
   var Configstore = require('configstore');
   var logUpdate = require('log-update');
+  var objToTable = require('obj-to-table');
   var pkg = require('./package.json');
-  var getAllPnrs = require('./getPnrs.js');
+
+  var deletePnrs = require('./deletePnrs.js');
   var addPnr = require('./addPnr.js');
   var checkPnrStatus = require('./checkPnrStatus.js');
   var addApiKey = require('./addApiKey.js');
@@ -39,8 +41,8 @@ module.exports = function (str, opts) {
     return;
   }
 
-  if (opts.a || opts.all) {
-    console.log('Need to check all PNRs!');
+  if (opts.d || opts.del || opts.delete || str === 'delete') {
+    deletePnrs();
     return;
   }
 
@@ -68,9 +70,14 @@ module.exports = function (str, opts) {
     checkPnrStatus(str, function (result) {
       clearInterval(spinner);
       logUpdate(chalk.green('\nPNR Status retrieved!'));
-      var objToTable = require('obj-to-table');
       console.log(objToTable(result).toString());
     });
     return;
   }
+
+  // Default case
+
+  require('./checkAllPnrStatus.js')(function (resultsObj) {
+    console.log(objToTable(resultsObj).toString());
+  });
 };
