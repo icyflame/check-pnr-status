@@ -26,7 +26,9 @@
     ""
   ],
   "dependencies": {
+    "chalk": "^1.1.1",
     "configstore": "^1.2.1",
+    "confirm-simple": "^1.0.3",
     "meow": "^3.3.0",
     "parse-json": "^2.2.0",
     "request": "^2.61.0"
