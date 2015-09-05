@@ -20,4 +20,4 @@ var cli = meow({
   ]
 });
 
-console.log(checkPnrStatus(cli.input[0] || 'unicorns'));
+checkPnrStatus(cli.input[0], cli.flags);
