@@ -29,8 +29,11 @@
     "chalk": "^1.1.1",
     "configstore": "^1.2.1",
     "confirm-simple": "^1.0.3",
+    "got": "^4.1.1",
     "inquirer": "^0.9.0",
+    "log-update": "^1.0.0",
     "meow": "^3.3.0",
+    "obj-to-table": "^1.0.1",
     "parse-json": "^2.2.0",
     "request": "^2.61.0"
   },

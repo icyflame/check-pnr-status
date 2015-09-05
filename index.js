@@ -1,11 +1,12 @@
 'use strict';
 module.exports = function (str, opts) {
-  var request = require('request');
   var chalk = require('chalk');
   var Configstore = require('configstore');
+  var logUpdate = require('log-update');
   var pkg = require('./package.json');
   var getAllPnrs = require('./getPnrs.js');
   var addPnr = require('./addPnr.js');
+  var checkPnrStatus = require('./checkPnrStatus.js');
   var addApiKey = require('./addApiKey.js');
 
   var conf = new Configstore(pkg.name);
@@ -13,9 +14,11 @@ module.exports = function (str, opts) {
   var error = require('./tools.js').error;
   var info = require('./tools.js').info;
   var success = require('./tools.js').success;
+  var getApiKey = require('./tools.js').getApiKey;
+  var showSpinner = require('./tools.js').showSpinner;
 
   if (opts.a || opts.all || str) {
-    if (!conf.get('API_KEY')) {
+    if (!getApiKey()) {
       error('Please get an API key from railwayapi.com');
       info('Then, run ' + chalk.green.underline('pnr --api-key abcdefgh'));
       return;
@@ -59,7 +62,14 @@ module.exports = function (str, opts) {
   }
 
   if (str) {
-    console.log('Check the PNR: ' + str);
+    var spinner = showSpinner();
+
+    checkPnrStatus(str, function (result) {
+      clearInterval(spinner);
+      logUpdate(chalk.green('\nPNR Status retrieved!'));
+      var objToTable = require('obj-to-table');
+      console.log(objToTable(result).toString());
+    });
     return;
   }
 };
