@@ -6,6 +6,7 @@ module.exports = function (str, opts) {
   var pkg = require('./package.json');
   var getAllPnrs = require('./getPnrs.js');
   var addPnr = require('./addPnr.js');
+  var addApiKey = require('./addApiKey.js');
 
   var conf = new Configstore(pkg.name);
 
@@ -43,8 +44,13 @@ module.exports = function (str, opts) {
     if (opts.apiKey === 'show' || typeof opts.apiKey === 'boolean') {
       info('The existing API key is ' + chalk.green.underline(conf.get('API_KEY')));
     } else if (typeof opts.apiKey === 'string') {
-      conf.set('API_KEY', opts.apiKey);
-      success('API key added to the configstore.');
+      addApiKey(opts.apiKey, function (result) {
+        if (result === 'written') {
+          success('API key added to the configstore.');
+        } else if (result === 'unchanged') {
+          success('API key was not changed.');
+        }
+      });
     } else {
       error('Invalid Option.');
       info('You can either show exisiting API key or add an API key.');
