@@ -14,6 +14,10 @@ module.exports = function (Pnr, cb) {
     cb({
       'from': bodyJson.from_station.code,
       'to': bodyJson.to_station.code,
+      'date': (new Date(bodyJson.train_start_date.year,
+        bodyJson.train_start_date.month - 1,
+        bodyJson.train_start_date.day))
+        .toDateString(),
       'status': bodyJson.passengers[0].current_status
     });
   }
