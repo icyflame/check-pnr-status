@@ -15,7 +15,7 @@ module.exports = function (ApiKey, cb) {
         conf.set('API_KEY', ApiKey);
         cb('written');
       } else {
-        cb('unchanged')
+        cb('unchanged');
       }
     });
   } else {
