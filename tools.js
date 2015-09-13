@@ -41,3 +41,20 @@ module.exports.showSpinner = function () {
     logUpdate('\n' + frame + chalk.green(' Processing your request') + '\n');
   }, 100);
 };
+
+module.exports.validatePnr = function (pnr) {
+  var inArray = require('in-array');
+  if (pnr.length !== 10) {
+    throw new Error('Invalid PNR');
+  }
+  var numbers = [];
+  for (var i = 0; i < 10; i++) {
+    numbers.push(i.toString());
+  }
+  for (i = 0; i < pnr.length; i++) {
+    if (!inArray(numbers, pnr[i])) {
+      throw new Error('Invalid PNR');
+    }
+  }
+  return true;
+};
