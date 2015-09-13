@@ -28,7 +28,11 @@ function getCorrectUrl () { // eslint-disable-line
 }
 
 var getPnrStatusDirectSite = function (Pnr, cb) {
+  var tools = require('./tools.js');
+  tools.validatePnr(Pnr);
+
   var request = require('request');
+  var cheerio = require('cheerio');
 
   var requestUrl = 'http://www.indianrail.gov.in/cgi_bin/inet_pnstat_cgi_10521.cgi';
 
@@ -52,11 +56,19 @@ var getPnrStatusDirectSite = function (Pnr, cb) {
     if (error) {
       console.error(error);
       cb(false);
+    } else if (!error && response.statusCode === 200) {
+      var $ = cheerio.load(body);
+      var status = $('table#center_table tr').eq(1).children('td').eq(2).text();
+      status = status.replace(/\s+/g, ' ');
+      require('fs').writeFileSync('temp.html', body);
+      var resultObj = {
+        'from': '',
+        'to': '',
+        'date': '',
+        'status': status.toString()
+      };
+      cb(resultObj);
     }
-    console.log(response.statusCode);
-    require('fs').writeFileSync('temp.html', body);
-    cb(null);
-  // }
   });
 };
 
