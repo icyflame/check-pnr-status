@@ -1,4 +1,66 @@
-module.exports = function (Pnr, cb) {
+function getCorrectUrl () { // eslint-disable-line
+  var async = require('async');
+  var request = require('request');
+  var cheerio = require('cheerio');
+
+  var url = 'http://www.indianrail.gov.in/pnr_Enq.html';
+  async.series([
+    function (callback) {
+      request(url, function (err, response, body) {
+        console.log('Request returned :D');
+        if (!err && response.statusCode === 200) {
+          var $ = cheerio.load(body);
+          var final_url = $('form').attr('action');
+          console.log(final_url);
+          callback(null, final_url);
+        } else {
+          if (err) {
+            callback(err);
+          }
+        }
+      });
+    }], function (err, results) {
+    if (err) {
+      console.error(err);
+    }
+    return results[0];
+  });
+}
+
+var getPnrStatusDirectSite = function (Pnr, cb) {
+  var request = require('request');
+
+  var requestUrl = 'http://www.indianrail.gov.in/cgi_bin/inet_pnstat_cgi_10521.cgi';
+
+  var random_digit = parseInt(Math.random() * 89999, 10) + 10000;
+
+  var formData_object = {
+    'lccp_cap_val': random_digit,
+    'lccp_capinp_val': random_digit,
+    'lccp_pnrno1': Pnr,
+    'submit': 'Get Status'
+  };
+
+  var header_object = {
+    'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0',
+    'Host': 'www.indianrail.gov.in',
+    'Origin': 'http://www.indianrail.gov.in',
+    'Referer': 'http://www.indianrail.gov.in/pnr_Enq.html'
+  };
+
+  request({ method: 'POST', url: requestUrl, form: formData_object, headers: header_object }, function (error, response, body) {
+    if (error) {
+      console.error(error);
+      cb(false);
+    }
+    console.log(response.statusCode);
+    require('fs').writeFileSync('temp.html', body);
+    cb(null);
+  // }
+  });
+};
+
+var getPnrStatusRailwayApi = function (Pnr, cb) { // eslint-disable-line
   var request = require('request');
   var getApiKey = require('./tools.js').getApiKey;
 
@@ -28,3 +90,5 @@ module.exports = function (Pnr, cb) {
     }
   });
 };
+
+module.exports = getPnrStatusDirectSite;
