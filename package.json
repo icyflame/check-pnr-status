@@ -15,6 +15,13 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "semistandard": {
+    "ignore": [
+      "/libs/*",
+      "sandbox.js",
+      "unused-functions.js"
+    ]
+  },
   "scripts": {
     "test": "semistandard && mocha"
   },
@@ -34,11 +41,13 @@
   ],
   "dependencies": {
     "arr-exclude": "^1.0.0",
+    "async": "^1.4.2",
     "chalk": "^1.1.1",
     "cheerio": "^0.19.0",
     "configstore": "^1.2.1",
     "in-array": "^0.1.0",
     "inquirer": "^0.9.0",
+    "jsdom": "3.*",
     "log-update": "^1.0.0",
     "meow": "^3.3.0",
     "obj-to-table": "^1.0.1",
