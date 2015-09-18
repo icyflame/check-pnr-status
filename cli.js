@@ -6,17 +6,34 @@ var checkPnrStatus = require('./');
 var cli = meow({
   help: [
     'Usage',
-    '  $ check-pnr-status [input]',
+    '  $ pnr [input]',
     '',
     'Examples',
-    '  $ check-pnr-status',
-    '  unicorns & rainbows',
+    '  $ pnr',
+    '  All PNR statuses retrieved!',
+    '  Parsing the recieved data.',
     '',
-    '  $ check-pnr-status ponies',
-    '  ponies & rainbows',
+    ' ┌───────────────┬───────────────┬───────────────┬───────────────┐',
+    ' │ from          │ to            │ date          │ status        │',
+    ' ├───────────────┼───────────────┼───────────────┼───────────────┤',
+    ' │ KGP           │ MAS           │ 29-11-2015    │ CNF           │',
+    ' ├───────────────┼───────────────┼───────────────┼───────────────┤',
+    ' │ SRC           │ MAS           │ 16-10-2015    │ Confirmed     │',
+    ' ├───────────────┼───────────────┼───────────────┼───────────────┤',
+    ' │ MAS           │ KGP           │ 2-1-2016      │ W/L1          │',
+    ' ├───────────────┼───────────────┼───────────────┼───────────────┤',
+    ' │ KGP           │ SC            │ 17-10-2015    │ W/L71         │',
+    ' └───────────────┴───────────────┴───────────────┴───────────────┘',
+    '',
+    '  $ pnr --add 1234567890',
+    '',
+    '  PNR added! Run pnr -a to check status of all PNRs!',
     '',
     'Options',
-    '  --foo  Lorem ipsum. Default: false'
+    '  --add          Add a PNR',
+    '  --delete, -d   Delete a PNR',
+    '  --all, -a      Show statuses of all the PNRs stored on machine',
+    ''
   ]
 });
 

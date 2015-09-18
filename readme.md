@@ -1,70 +1,106 @@
 # check-pnr-status
 
-> My divine module
+> Keep track of your PNRs, without having to visit irctc.co.in
 
 [![Build Status](https://travis-ci.org/icyflame/check-pnr-status.svg?branch=master)](https://travis-ci.org/icyflame/check-pnr-status)
 
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg)](https://github.com/Flet/semistandard)
 
-## Install
-
-```
-$ npm install --save check-pnr-status
-```
+![screenshot](./img/screenshot.png)
 
 
-## Usage
+## Why?
 
-```js
-var checkPnrStatus = require('check-pnr-status');
-
-checkPnrStatus('unicorns');
-//=> unicorns & rainbows
-```
+Visiting irctc.co.in and logging in and then checking the status of your PNR
+requires close to 10-15 clicks per PNR and involves entering your username
+and password. That was simply too much effort for a trivial operation.
+Using this module, will let you keep track of your PNRs from
+the terminal without any overhead.
 
 
 ## CLI
 
 ```
-$ npm install --global check-pnr-status
+$ npm install --global pnr
 ```
 ```
-$ check-pnr-status --help
+$ pnr --help
+
+  Keep track of your PNRs, without having to visit irctc.co.in
 
   Usage
-    check-pnr-status [input]
+    $ pnr [input]
 
-  Example
-    check-pnr-status
-    unicorns & rainbows
+  Examples
+    $ pnr
+    All PNR statuses retrieved!
+    Parsing the recieved data.
 
-    check-pnr-status ponies
-    ponies & rainbows
+   ┌───────────────┬───────────────┬───────────────┬───────────────┐
+   │ from          │ to            │ date          │ status        │
+   ├───────────────┼───────────────┼───────────────┼───────────────┤
+   │ KGP           │ MAS           │ 29-11-2015    │ CNF           │
+   ├───────────────┼───────────────┼───────────────┼───────────────┤
+   │ SRC           │ MAS           │ 16-10-2015    │ Confirmed     │
+   ├───────────────┼───────────────┼───────────────┼───────────────┤
+   │ MAS           │ KGP           │ 2-1-2016      │ W/L1          │
+   ├───────────────┼───────────────┼───────────────┼───────────────┤
+   │ KGP           │ SC            │ 17-10-2015    │ W/L71         │
+   └───────────────┴───────────────┴───────────────┴───────────────┘
+
+    $ pnr --add 1234567890
+
+    PNR added! Run pnr -a to check status of all PNRs!
 
   Options
-    --foo  Lorem ipsum. Default: false
+    --add          Add a PNR
+    --delete, -d   Delete a PNR
+    --all, -a      Show statuses of all the PNRs stored on machine
 ```
 
 
-## API
+## Known Limitations
 
-### checkPnrStatus(input, [options])
+- IRCTC has a daily maintenance shutdown between **2330 and 0030 India Standard Time.** This module and any browser page that checks PNR statuses won't work during this time.
+- PNRs that have expired (date is past the travel date will automatically be flushed by IRCTC),
+and hence won't show up on your results table. **But I strongly recommend that you delete
+the PNR once you have travelled with it.** (Keeping it in memory will take up the time that is required to request details from IRCTC
+  as it will also go through the HTML parser and then be omitted.)
 
-#### input
 
-*Required*  
+## CLI Options
+
+### pnr --options
+
+#### pnr
+
+*No arguments*  
 Type: `string`
 
-Lorem ipsum.
+Show the statuses of all the stored PNRs
 
 #### options
 
-##### foo
+##### add
 
-Type: `boolean`  
-Default: `false`
+Type: `string of digits`  
 
-Lorem ipsum.
+Add a PNR (must be 10-digit string)
+
+##### delete
+
+Delete a PNR (using a selection element)
+
+![delete-screenshot](./img/delete-screenshot.png)
+
+
+## TODO
+
+- **_Required_** Fix the tests.js module and make it work!
+- **_Required_** Have logger integration with `debug`, `verbose`, `info` levels. Provide functionality to users to run the command with `verbose` option.
+- _Medium_ Store the recieved data in a JSON and show it during the maintenance hours of IRCTC.
+- _Long term_ Use the JSON to find the expiry date of each PNR and delete PNR from system after the travel date.
+- _Always_ Write more tests!
 
 
 ## License

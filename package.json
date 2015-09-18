@@ -1,7 +1,7 @@
 {
   "name": "check-pnr-status",
   "version": "0.0.0",
-  "description": "My divine module",
+  "description": "Keep track of your PNRs, without having to visit irctc.co.in",
   "license": "MIT",
   "repository": "icyflame/check-pnr-status",
   "author": {
@@ -23,7 +23,7 @@
     ]
   },
   "scripts": {
-    "test": "semistandard && mocha"
+    "test": "mocha"
   },
   "files": [
     "index.js",
