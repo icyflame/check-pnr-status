@@ -58,3 +58,54 @@ module.exports.validatePnr = function (pnr) {
   }
   return true;
 };
+
+var removeExtraSpaces = module.exports.removeExtraSpaces = function (string) {
+  return string.replace(/\s+/g, '');
+};
+
+module.exports.getDataFromHtml = function (html_body, selectors, callback) {
+  var retObj = new Array(selectors.length);
+  var fs = require('fs');
+  var jquery = fs.readFileSync('./libs/jquery.js', 'utf-8');
+  var jsdom = require('jsdom');
+  jsdom.env({
+    html: html_body,
+    src: [jquery],
+    done: function (err, window) { // eslint-disable-line
+      var $ = window.$;
+      for (var i = 0; i < selectors.length; i++) {
+        var thisSelector = [];
+        $(selectors[i]).each(function () {
+          // console.log($(this).html());
+          thisSelector.push(removeExtraSpaces($(this).text()).toString());
+        });
+        // console.log(thisSelector);
+        retObj[i] = thisSelector;
+      }
+      window.close();
+      callback(null, retObj);
+    }
+  });
+};
+
+module.exports.fixFormatting = function (resultObj) {
+  /*
+  Takes an array of arrays, and converts it into an Object
+  that can be rendered by the obj-to-table module
+  */
+  var selectors = resultObj.length;
+  if (selectors < 1) {
+    return {};
+  }
+  var records = resultObj[0].length;
+  var tableHeaders = require('./defineSelectors.js').tableHeaders;
+  var tableObj = [];
+  for (var i = 0; i < records; i++) {
+    var thisRecord = {};
+    for (var j = 0; j < tableHeaders.length; j++) {
+      thisRecord[tableHeaders[j]] = resultObj[j][i];
+    }
+    tableObj.push(thisRecord);
+  }
+  return tableObj;
+};
