@@ -1,12 +1,14 @@
 module.exports = function (cb) {
   var async = require('async');
   var allPnrs = require('./getPnrs.js')();
-  var checkPnrStatus = require('./checkPnrStatus.js');
+  var tools = require('./tools.js');
+  var fs = require('fs');
+  var performRequest = require('./checkPnrStatus.js').performRequest;
   var logUpdate = require('log-update');
   var chalk = require('chalk');
 
-  var GLOB_ARR = [];
   var this_pnr = '';
+  var all_html = '';
   var num = 0;
   var total = allPnrs.length;
   var i = 0;
@@ -21,17 +23,20 @@ module.exports = function (cb) {
   async.eachSeries(allPnrs, function iterator (item, callback) {
     this_pnr = item;
     num += 1;
-    checkPnrStatus(item, function (resultObj) {
-      GLOB_ARR.push(resultObj);
+    performRequest(item, function (err, html_body) { // eslint-disable-line
+      all_html += html_body;
       callback();
     });
   }, function done (err) {
     if (err) {
       console.error(err);
     } else {
-      clearInterval(spinner);
-      logUpdate(chalk.green('\nAll PNR statuses retrieved!'));
-      cb(GLOB_ARR);
+      logUpdate(chalk.green('\nAll PNR statuses retrieved!\nParsing the recieved data'));
+      fs.writeFileSync('./temp-all.html', all_html);
+      tools.getDataFromHtml(all_html, require('./defineSelectors.js').selectors, function (err, resultObj) { // eslint-disable-line
+        clearInterval(spinner);
+        cb(tools.fixFormatting(resultObj));
+      });
     }
   });
 };
