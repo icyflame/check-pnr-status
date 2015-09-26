@@ -25,21 +25,6 @@
   "scripts": {
     "test": "mocha"
   },
-  "files": [
-    "addApiKey.js",
-    "checkPnrStatus.js",
-    "deletePnrs.js",
-    "test.js",
-    "addPnr.js",
-    "cli.js",
-    "index.js",
-    "checkAllPnrStatus.js",
-    "defineSelectors.js",
-    "getPnrs.js",
-    "libs",
-    "examples",
-    "tools.js"
-  ],
   "keywords": [
     "cli-app",
     "cli",
