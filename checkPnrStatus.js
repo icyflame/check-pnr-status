@@ -24,6 +24,8 @@ function performRequest (Pnr, htmlParseCallback, verboseOutput) {
     'Origin': 'http://www.indianrail.gov.in',
     'Referer': 'http://www.indianrail.gov.in/pnr_Enq.html'
   };
+
+	var flushed_pnrs = [];
   request({ method: 'POST', url: requestUrl, form: formData_object, headers: header_object }, function (error, response, body) {
     if (error) {
       console.error(error);
@@ -35,7 +37,10 @@ function performRequest (Pnr, htmlParseCallback, verboseOutput) {
         console.log((new Date()).toISOString());
         console.log('sending body to html parser');
       }
-      htmlParseCallback(null, body);
+			if (body.match(/FLUSHED\sPNR/g)) {
+				flushed_pnrs.push(Pnr);
+			}
+      htmlParseCallback(null, body, flushed_pnrs);
     }
   });
 }

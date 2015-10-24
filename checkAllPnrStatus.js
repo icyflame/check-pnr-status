@@ -20,11 +20,16 @@ module.exports = function (cb) {
         this_pnr + '( ' + num + ' of ' + total + ')') + '\n');
   }, 100);
 
+	var delete_pnrs = [];
+
   async.eachSeries(allPnrs, function iterator (item, callback) {
     this_pnr = item;
     num += 1;
-    performRequest(item, function (err, html_body) { // eslint-disable-line
+    performRequest(item, function (err, html_body, flushed_pnrs) { // eslint-disable-line
       all_html += html_body;
+			if(flushed_pnrs && flushed_pnrs.length > 0) {
+				delete_pnrs.push(flushed_pnrs[0]);
+			}
       callback();
     });
   }, function done (err) {
@@ -35,7 +40,7 @@ module.exports = function (cb) {
       fs.writeFileSync('./temp-all.html', all_html);
       tools.getDataFromHtml(all_html, require('./defineSelectors.js').selectors, function (err, resultObj) { // eslint-disable-line
         clearInterval(spinner);
-        cb(tools.fixFormatting(resultObj));
+        cb(tools.fixFormatting(resultObj), delete_pnrs);
       });
     }
   });

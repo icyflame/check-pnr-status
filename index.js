@@ -77,7 +77,12 @@ module.exports = function (str, opts) {
 
   // Default case
 
-  require('./checkAllPnrStatus.js')(function (resultsObj) {
+  require('./checkAllPnrStatus.js')(function (resultsObj, pnrs_to_delete) {
     console.log(objToTable(resultsObj).toString());
+		console.log('\nYou have stored some PNRs which have been flushed by IRCTC: \n');
+		for(var i = 0; i < pnrs_to_delete.length; i++) {
+			console.log(i+1 + ': ' +  pnrs_to_delete[i]);
+		}
+		console.log('\nRun ' + chalk.green('pnr --delete') + ' and select this PNR to delete it from local store.\n');
   });
 };
