@@ -8,6 +8,10 @@
 
 ![screenshot](./img/screenshot.png)
 
+**Compatible with Node <0.12.7 only**
+
+I am working to make this work in latest versions (Node 4.x). Meanwhile, you can use a Node.js version
+manager such as [nvm](https://github.com/creationix/nvm) or [n](https://github.com/tj/n).
 
 ## Why?
 
