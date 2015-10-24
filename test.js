@@ -1,16 +1,16 @@
 /* global it, describe */
 'use strict';
 var assert = require('assert');
-// var tools = require('./tools.js');
-// var async = require('async');
-// var checkPnrStatus = require('./');
+var tools = require('./tools.js');
+var async = require('async');
+var checkPnrStatus = require('./');
 
 describe('test suite is running', function () {
   it('should work', function () {
     assert.strictEqual(true, true);
   });
 });
-/*
+
 describe('check if PNR validation function in tools.js works', function () {
   it('should validate PNR ', function () {
     assert.strictEqual(tools.validatePnr('4111123456'), true);
@@ -113,4 +113,4 @@ describe('check if HTML parser in tools.js works', function () {
     }
   });
 });
-*/
+
